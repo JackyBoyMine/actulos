@@ -1,0 +1,71 @@
+:root {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #888;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Courier New", monospace;
+  padding: 40px;
+  line-height: 1.6;
+  font-size: 16px;
+  cursor: none;
+}
+
+.hidden { display: none; }
+
+/* background grid */
+.grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--muted) 1px, transparent 1px),
+    linear-gradient(90deg, var(--muted) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.05; pointer-events: none; z-index: -1;
+}
+
+/* enter screen */
+#enter-screen {
+  position: fixed; inset: 0;background: #000;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000; overflow: hidden;
+}
+.enter-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: -1; pointer-events: none; display: block;
+  /* optional: dim background so text stays readable */
+  filter: brightness(0.6);
+}
+.enter-content { text-align: center; color: #ffffff; font-size: 18px; }
+.enter-logo { max-width: 260px; margin-bottom: 20px; display:block; }
+
+/* startup overlay (hidden until boot) */
+#startup {
+  position: fixed; inset: 0; background: #000; color: rgb(255, 183, 245);
+  font-family: "Courier New", monospace; padding: 40px; font-size: 15px;
+  z-index: 9999; overflow: auto; opacity: 0; pointer-events: none;
+}
+#startup img { max-width: 260px; margin: 12px 0; display: block; }
+
+.prompt { color: var(--muted); }
+a { color: var(--fg); text-decoration: none; border-bottom: 1px dashed var(--fg); }
+
+/* mouse trail dots */
+.dot {
+  position: fixed; width: 6px; height: 6px; background: var(--fg); border-radius: 50%;
+  pointer-events: none; opacity: 0.9; transform: translate(-50%, -50%);
+  animation: fade 0.4s linear forwards;
+}
+@keyframes fade { from { opacity: 0.9; } to { opacity: 0; transform: translate(-50%, -50%) scale(0.4); } }
+/* fading text animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  45% { opacity: 1; }
+  55% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.fade { animation: fadeInOut 1.4s ease-in-out infinite; }
