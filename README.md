@@ -87,12 +87,13 @@
   <br><br>
 
   <span class="prompt">brian@portfolio:~$</span> ls contact  
-  <br><a href="#">github</a>
+  <br><a href="https://github.com/JackyBoyMine">github</a>
   <br><a href="#">linkedin</a>
-  <br><a href="#">email</a>
+  <br><a href="mailto:brianinthirath@gmail.com">email</a>
   <br><br>
 
-  <span class="prompt">brian@portfolio:~$</span> _
+  <span class="prompt">brian@portfolio:~$</span> 
+<span id="myBlinkingDiv">_</span> 
 </div>
 
 <script>
@@ -104,6 +105,11 @@
     document.body.appendChild(dot);
     setTimeout(() => dot.remove(), 400);
   });
+  var blink_speed = 700;
+  var t = setInterval(function () {
+    var ele = document.getElementById('myBlinkingDiv');
+    ele.style.visibility = (ele.style.visibility == 'hidden' ? '' : 'hidden');
+}, blink_speed);
 </script>
 
 </body>
