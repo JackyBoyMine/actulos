@@ -11,26 +11,25 @@
     <img src="images/bg_dark_anim_0_08.gif" class="enter-bg" alt="background animation">
     <img src="images/bg_darker.gif" class="enter-bg" alt="background animation">
     <div class="enter-content">
-      <img src="images/navi.gif" class="enter-logo" alt="logo">
+      <img src="images/navi.gif" class="logo" alt="logo">
       <p id="enterPrompt" class="fade">Press any key to enter</p>
     </div>
   </div>
 
   <div id="startup" aria-hidden="true" role="status"></div>
-
+  
   <div class="" aria-hidden="true"></div>
     <audio id="bgAudio" loop="on">
       <source src="Sounds/genjoh.wav" type="audio/mpeg">
     </audio>
-  <main id="main" class="hidden">
+  <main id="main" class="hidden" >
     <div>
       <div>
-        <img width="250" height="auto" src="images/almostCryLAIN6.gif" class="logo" alt="logo">
+        <img class="logo" src="images/lon.gif"alt="logo">
       </div>
       <span class="prompt">brian@portfolio:~$</span> whoami
       <br>Brian — CS @ GSU, building things and learning nonstop.
       <br><br>
-
 
       <span class="prompt">brian@portfolio:~$</span> ls resume
       <br><a href="resume.pdf" target="_blank" rel="noopener">resume.pdf</a>
@@ -46,6 +45,9 @@
       <br><a href="https://github.com/JackyBoyMine" target="_blank" rel="noopener">github</a>
       <br><a href="https://www.linkedin.com/in/brian-inthirath-2287213ab/" target="_blank" rel="noopener">linkedin</a>
       <br><a href="mailto:brianinthirath@gmail.com">email</a>
+      <br><br>
+
+      <span class="prompt">brian@portfolio:~$</span> <span class="hint">(type 'mute' and 'unmute' to toggle music)</span>
       <br><br>
 
       <span class="prompt">brian@portfolio:~$</span> <span id="myBlinkingDiv" class="fade">_</span>
@@ -66,23 +68,18 @@
     const enterScreen = document.getElementById('enter-screen');
     const startup = document.getElementById('startup');
     const main = document.getElementById('main');
+    const bgAudio = document.getElementById('bgAudio');
+    const audio = document.getElementById('bgAudio');
+    audio.volume = 0.2;
 
     function startBoot() {
       if (!enterScreen || !startup || !main) return;
 
       // play audio on first user interaction
-      const bgAudio = document.getElementById('bgAudio');
       if (bgAudio) {
         bgAudio.play().catch(() => {});
         document.removeEventListener('keydown', playAudio);
         document.removeEventListener('click', playAudio);
-      }
-
-      // play enter sound (user gesture)
-      const enterAudio = document.getElementById('enterSound');
-      if (enterAudio) {
-        enterAudio.currentTime = 0;
-        enterAudio.play().catch(() => {});
       }
 
       enterScreen.style.transition = 'opacity 0.6s ease-out';
@@ -98,7 +95,7 @@
         'loading modules...',
         'initializing terminal renderer...',
         '',
-        "<img src='images/almostCryLAIN6.gif' alt='animation'>",
+        "<img src='images/almostCryLAIN6.gif' alt='animation' style='max-width: 100%; width: 20em; height: auto;'>",
         '',
         'launching shell...',
         'complete.'
@@ -117,6 +114,7 @@
             setTimeout(() => {
               startup.remove();
               main.classList.remove('hidden');
+              setupTerminalCommands();
             }, 800);
           }, 1200);
         }
@@ -125,12 +123,39 @@
       nextLine();
     }
 
+    function setupTerminalCommands() {
+      const blinkingDiv = document.getElementById('myBlinkingDiv');
+      let command = '';
+
+      function handleKeydown(e) {
+        // Only capture lowercase letters and backspace
+        if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
+          command += e.key;
+          blinkingDiv.textContent = command + '_';
+        } else if (e.key === 'Backspace') {
+          command = command.slice(0, -1);
+          blinkingDiv.textContent = command + '_';
+        } else if (e.key === 'Enter') {
+          if (command.toLowerCase() === 'mute') {
+            bgAudio.pause();
+            console.log('Music muted');
+          } else if (command.toLowerCase() === 'unmute') {
+            bgAudio.play().catch(() => {});
+            console.log('Music unmuted');
+          }
+          command = '';
+          blinkingDiv.textContent = '_';
+        }
+      }
+
+      document.addEventListener('keydown', handleKeydown);
+    }
+
     window.addEventListener('keydown', startBoot, { once: true });
     window.addEventListener('click', startBoot, { once: true });
 
     // Play audio on first user interaction
     function playAudio() {
-      const bgAudio = document.getElementById('bgAudio');
       if (bgAudio) {
         bgAudio.play().catch(() => {});
         document.removeEventListener('keydown', playAudio);
