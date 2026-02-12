@@ -8,26 +8,29 @@
 </head>
 <body>
   <div id="enter-screen">
-    <img src="bg_dark_anim_0_08.gif" class="enter-bg" alt="background animation">
-    <img src="bg_darker.gif" class="enter-bg" alt="background animation">
+    <img src="images/bg_dark_anim_0_08.gif" class="enter-bg" alt="background animation">
+    <img src="images/bg_darker.gif" class="enter-bg" alt="background animation">
     <div class="enter-content">
-      <img src="navi.gif" class="enter-logo" alt="logo">
+      <img src="images/navi.gif" class="enter-logo" alt="logo">
       <p id="enterPrompt" class="fade">Press any key to enter</p>
     </div>
-    <audio loop="on" autoplay="on">
-      <source src="genjoh.mp3" type="audio/mp3">
-    </audio>
   </div>
 
   <div id="startup" aria-hidden="true" role="status"></div>
 
-  <div class="grid" aria-hidden="true"></div>
-
+  <div class="" aria-hidden="true"></div>
+    <audio id="bgAudio" loop="on">
+      <source src="Sounds/genjoh.wav" type="audio/mpeg">
+    </audio>
   <main id="main" class="hidden">
     <div>
+      <div>
+        <img width="250" height="auto" src="images/almostCryLAIN6.gif" class="logo" alt="logo">
+      </div>
       <span class="prompt">brian@portfolio:~$</span> whoami
       <br>Brian — CS @ GSU, building things and learning nonstop.
       <br><br>
+
 
       <span class="prompt">brian@portfolio:~$</span> ls resume
       <br><a href="resume.pdf" target="_blank" rel="noopener">resume.pdf</a>
@@ -38,7 +41,7 @@
       <br><a href="#">project_2</a>
       <br><a href="#">project_3</a>
       <br><br>
-
+      
       <span class="prompt">brian@portfolio:~$</span> ls contact
       <br><a href="https://github.com/JackyBoyMine" target="_blank" rel="noopener">github</a>
       <br><a href="https://www.linkedin.com/in/brian-inthirath-2287213ab/" target="_blank" rel="noopener">linkedin</a>
@@ -67,6 +70,14 @@
     function startBoot() {
       if (!enterScreen || !startup || !main) return;
 
+      // play audio on first user interaction
+      const bgAudio = document.getElementById('bgAudio');
+      if (bgAudio) {
+        bgAudio.play().catch(() => {});
+        document.removeEventListener('keydown', playAudio);
+        document.removeEventListener('click', playAudio);
+      }
+
       // play enter sound (user gesture)
       const enterAudio = document.getElementById('enterSound');
       if (enterAudio) {
@@ -87,7 +98,7 @@
         'loading modules...',
         'initializing terminal renderer...',
         '',
-        "<img src='almostCryLAIN6.gif' alt='animation'>",
+        "<img src='images/almostCryLAIN6.gif' alt='animation'>",
         '',
         'launching shell...',
         'complete.'
@@ -116,6 +127,19 @@
 
     window.addEventListener('keydown', startBoot, { once: true });
     window.addEventListener('click', startBoot, { once: true });
+
+    // Play audio on first user interaction
+    function playAudio() {
+      const bgAudio = document.getElementById('bgAudio');
+      if (bgAudio) {
+        bgAudio.play().catch(() => {});
+        document.removeEventListener('keydown', playAudio);
+        document.removeEventListener('click', playAudio);
+      }
+    }
+
+    document.addEventListener('keydown', playAudio);
+    document.addEventListener('click', playAudio);
   </script>
 </body>
 </html>
